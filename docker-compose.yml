@@ -1,0 +1,25 @@
+version: '2.1'
+
+services:
+  db:
+    container_name: 'h2'
+    hostname: 'h2'
+    image: '1000kit/h2'
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;MODE=MySQL'
+      SPRING_DATASOURCE_USERNAME: 'sa'
+      SPRING_DATASOURCE_PASSWORD:
+  springboot-restful-webservices:
+    container_name: springboot-restful-webservices
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      springboot-h2-net:
+    restart: on-failure
+networks:
+  springboot-h2-net:
